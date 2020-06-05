@@ -1,5 +1,4 @@
 <?php 
-
 /**
  * Template Name: Inpsyde Template Show Users
  *
@@ -8,11 +7,12 @@
  * @since Twenty Twenty 1.0
  */
 ?>
+
 <!DOCTYPE html>
 <html>
-<?php wp_head() ?>
 <head>
 	<title>Show users</title>
+	<?php wp_head() ?>
 </head>
 <body>
 <h2>Show users</h2>
@@ -26,20 +26,26 @@
 		</tr>
 	</thead>
 	<tbody>
-<!-- 		<tr>
-			<td colspan='5'>
-				<p>
-					<img src='<?php echo site_url() ?>/../wp-content/plugins/inpsyde-show-users/assets/images/loader.gif' alt='loader image'>
-					Fetching data...
-				</p>
-			</td>
-		</tr> -->
+		<!-- Content loaded dynamically -->
 	</tbody>
 </table>
+
+
+<input class="modal-state" id="details-modal" type="checkbox" />
+<div class="modal">
+	<label class="modal__bg" for="details-modal"></label>
+		<div class="modal__inner">
+			<label class="modal__close" for="details-modal"></label>
+			<h5>Details</h5>
+			<hr>	
+			<div class="modal-body">
+				<!-- Content loaded dynamically -->
+			</div>
+		</div>
+</div>
 
 <?php wp_footer(); ?>
 </body>
 </html>
 
 
-<!-- <script src="./../wp-content/plugins/inpsyde-show-users/assets/js/script.js"></script> -->

@@ -47,9 +47,8 @@ add_action( 'admin_menu', 'linked_url' );
 }
 
 function my_js_include_function() {
-	// var_dump(dirname( __FILE__ )); die();
-    wp_enqueue_style( 'style.css', '/../wp-content/plugins/inpsyde-show-users/assets/css/style.css');
-    wp_enqueue_script( 'script.js', '/../wp-content/plugins/inpsyde-show-users/assets/js/script.js', array('jquery') );
+    wp_enqueue_style('style.css', plugin_dir_url(__FILE__) . 'assets/css/style.css', array(), null, 'all');
+    wp_enqueue_script('script.js', plugin_dir_url(__FILE__) . 'assets/js/script.js', array('jquery') );
 }
 add_action( 'wp_enqueue_scripts', 'my_js_include_function' );
 
