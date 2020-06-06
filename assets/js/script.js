@@ -35,7 +35,7 @@ jQuery(document).ready(function($) {
 		html = `<tr>
 			<td colspan='5'>
 				<p class='loader-container'>
-					<img src='inpsyde-wp/../wp-content/plugins/ldps-show-users/assets/images/loader.gif' alt='loader image'>
+					<img src='./wp-content/plugins/ldps-show-users/assets/images/loader.gif' alt='loader image'>
 					Fetching data...
 				</p>
 			</td>
@@ -47,7 +47,7 @@ jQuery(document).ready(function($) {
 	function initializeModalLoader(el) {
 		el.empty();
 		html = `<p class='loader-container'>
-			<img src='inpsyde-wp/../wp-content/plugins/ldps-show-users/assets/images/loader.gif' alt='loader image'>
+			<img src='./wp-content/plugins/ldps-show-users/assets/images/loader.gif' alt='loader image'>
 			Fetching data...
 		</p>`
 
@@ -68,7 +68,7 @@ jQuery(document).ready(function($) {
 
 	function buildErrorElements() {
 		return `<div class='broken-panel'>
-			<img src= 'inpsyde-wp/../wp-content/plugins/ldps-show-users/assets/images/broken.png'>
+			<img src= './wp-content/plugins/ldps-show-users/assets/images/broken.png'>
 			Oops... Something went wrong.
 		</div>`
 	}
