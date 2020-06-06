@@ -1,5 +1,5 @@
 {
-    "name": "jjjjcccjjf/show-users",
+    "name": "jjjjcccjjf/ldps-show-users",
     "description": "A wordpress plugin that utilises a static URL to display a virtual page of https://jsonplaceholder.typicode.com/users in table format",
     "authors": [
         {
