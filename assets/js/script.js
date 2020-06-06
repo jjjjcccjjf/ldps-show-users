@@ -8,6 +8,9 @@ jQuery(document).ready(function($) {
 
 	$.getJSON('https://jsonplaceholder.typicode.com/users', function(result){ 
 		initializeTbody($usersTableBody, result)
+	}).fail(function(){
+		$usersTableBody.empty()
+		$usersTableBody.append(`<tr><td colspan='4'>` + buildErrorElements() + `</td></tr>`)
 	})
 
 	$('body').on('click', '.details-view', function() {
@@ -22,6 +25,9 @@ jQuery(document).ready(function($) {
 		initializeModalLoader($detailsModalBody)
 		$.getJSON('https://jsonplaceholder.typicode.com/users/' + user_id, function(result){ 
 			initializeMbody($detailsModalBody, result)
+		}).fail(function(){
+			$detailsModalBody.empty()
+			$detailsModalBody.append(buildErrorElements())
 		})
 	}
 
@@ -54,10 +60,17 @@ jQuery(document).ready(function($) {
 		el.append(html)
 	}
 
-	function initializeTbody(el, data) {
+	function initializeTbody(el, data) {	
 		el.empty()	
-		let html = 	buildTableElements(data)
+		let html = buildTableElements(data)
 		el.append(html)
+	}
+
+	function buildErrorElements() {
+		return `<div class='broken-panel'>
+			<img src= 'inpsyde-wp/../wp-content/plugins/inpsyde-show-users/assets/images/broken.png'>
+			Oops... Something went wrong.
+		</div>`
 	}
 
 	function buildTableElements(data) {

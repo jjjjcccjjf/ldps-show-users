@@ -123,3 +123,12 @@ body{
 .boldy {
   font-weight:bold;
 }
+
+.broken-panel {
+  text-align:center;
+}
+
+.broken-panel img {
+  margin: 0 auto;
+  height: 85px
+}
