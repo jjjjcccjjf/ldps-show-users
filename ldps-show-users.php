@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: Show Users
- * Plugin URI: http://example.com
+ * Plugin URI: https://github.com/jjjjcccjjf/ldps-show-users
  * Description: A wordpress plugin that utilises a static URL to display a virtual page of https://jsonplaceholder.typicode.com/users in table format
  * Version: 1.0
  * Author: Lorenzo Dante
@@ -12,7 +12,7 @@ defined( 'ABSPATH' ) or die();
 add_filter( 'template_include', 'contact_page_template', 99 );
 function contact_page_template( $template ) {
 
-    $file_name = 'template-inpsyde-show-users.php';
+    $file_name = 'template-ldps-show-users.php';
 
     $url_path = trim(parse_url(add_query_arg(array()), PHP_URL_PATH), '/');
     $templatename = 'show-users'; 
@@ -30,16 +30,24 @@ function contact_page_template( $template ) {
 
     return $template;
 }
-// add_filter('pre_handle_404', function($preempt, $wp_query) {
-//     global $wp;
-//     $customPages = ['show-users'];
 
-//     if (in_array($wp->request, $customPages)) {
-//       $preempt = true;
-//     }
-
-//     return $preempt;
-// }, 10, 2);
+add_filter( 'plugin_action_links_ldps-show-users/ldps-show-users.php', 'nc_settings_link' );
+function nc_settings_link( $links ) {
+	// Build and escape the URL.
+	$url = esc_url( add_query_arg(
+		'page',
+		'ldps_show_users_options',
+		get_admin_url() . 'admin.php'
+	) );
+	// Create the link.
+	$settings_link = "<a href='$url'>" . __( 'Settings' ) . '</a>';
+	// Adds the link to the end of the array.
+	array_push(
+		$links,
+		$settings_link
+	);
+	return $links;
+}//end nc_settings_link()
 
 add_action( 'admin_menu', 'linked_url' );
 function linked_url() {
@@ -68,19 +76,19 @@ function linkedurl_function() {
 add_action( 'admin_menu' , 'linkedurl_function' );
 
 // Init plugin options to white list our options
-function ldps_sampleoptions_init(){
-    register_setting( 'ldps_show_users_options', 'ldps_show_users', 'ldps_sampleoptions_validate' );
+function ldps_show_users_options_init(){
+    register_setting( 'ldps_show_users_options', 'ldps_show_users', 'ldps_show_users_options_validate' );
 }
-add_action('admin_init', 'ldps_sampleoptions_init' );
+add_action('admin_init', 'ldps_show_users_options_init' );
 
 // Add menu page
-function ldps_sampleoptions_add_page() {
-    add_options_page('Show Users Options', 'Show Users Options', 'manage_options', 'ldps_sampleoptions', 'ldps_sampleoptions_do_page');
+function ldps_show_users_options_add_page() {
+    add_options_page('Show Users Options', 'Show Users Options', 'manage_options', 'ldps_show_users_options', 'ldps_show_users_options_do_page');
 }
-add_action('admin_menu', 'ldps_sampleoptions_add_page');
+add_action('admin_menu', 'ldps_show_users_options_add_page');
 
 // Draw the menu page itself
-function ldps_sampleoptions_do_page() {
+function ldps_show_users_options_do_page() {
     global $option_defaults;
     $options = wp_parse_args(get_option('ldps_show_users'), $option_defaults);
     $virtual_slug = $options['virtual_slug'];
@@ -103,7 +111,7 @@ function ldps_sampleoptions_do_page() {
 }
 
 // Sanitize and validate input. Accepts an array, return a sanitized array.
-function ldps_sampleoptions_validate($input) {
+function ldps_show_users_options_validate($input) {
     // Say our second option must be safe text with no HTML tags
     $input['virtual_slug'] =  sanitize_title($input['virtual_slug']);
     
