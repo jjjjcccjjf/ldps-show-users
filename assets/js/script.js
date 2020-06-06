@@ -90,7 +90,7 @@ jQuery(document).ready(function($) {
 	function buildModalElements(data) {
 		return 	`<h6>`+ data.name +`</h6>
 			<div>`+ data.company.name +`<br>
-			<span>`+ data.company.catchPhrase +`</span></div>
+			<span>`+ data.company.catchPhrase +`</span></div><hr>
 		    <p><span class='boldy'>Username:</span> `+ data.username +`</p>
 		    <p><span class='boldy'>Email:</span> `+ data.email +`</p>
 		    <p><span class='boldy'>Address:</span> `+ [data.address.street, data.address.suite, data.address.city, data.address.zipcode].join(', ') +`</p>

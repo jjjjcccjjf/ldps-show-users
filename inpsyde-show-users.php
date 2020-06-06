@@ -42,7 +42,7 @@ function contact_page_template( $template ) {
 // }, 10, 2);
 
 add_action( 'admin_menu', 'linked_url' );
-	function linked_url() {
+function linked_url() {
 	add_menu_page( 'linked_url', 'Show Users', 'read', 'my_slug', '', 'dashicons-text', 1 );
 }
 
@@ -52,9 +52,60 @@ function my_js_include_function() {
 }
 add_action( 'wp_enqueue_scripts', 'my_js_include_function' );
 
-add_action( 'admin_menu' , 'linkedurl_function' );
-	function linkedurl_function() {
+
+/////////////////////////////////
+
+$option_defaults = array(
+  'virtual_slug' => 'show-users',
+);
+
+function linkedurl_function() {
 	global $menu;
-	$menu[1][2] = home_url('show-users');
+    global $option_defaults;
+    $options = wp_parse_args(get_option('ldps_show_users'), $option_defaults);
+	$menu[1][2] = home_url($options['virtual_slug']);
+}
+add_action( 'admin_menu' , 'linkedurl_function' );
+
+// Init plugin options to white list our options
+function ldps_sampleoptions_init(){
+    register_setting( 'ldps_show_users_options', 'ldps_show_users', 'ldps_sampleoptions_validate' );
+}
+add_action('admin_init', 'ldps_sampleoptions_init' );
+
+// Add menu page
+function ldps_sampleoptions_add_page() {
+    add_options_page('Show Users Options', 'Show Users Options', 'manage_options', 'ldps_sampleoptions', 'ldps_sampleoptions_do_page');
+}
+add_action('admin_menu', 'ldps_sampleoptions_add_page');
+
+// Draw the menu page itself
+function ldps_sampleoptions_do_page() {
+    global $option_defaults;
+    $options = wp_parse_args(get_option('ldps_show_users'), $option_defaults);
+    $virtual_slug = $options['virtual_slug'];
+    ?>
+    <div class="wrap">
+        <h2>Show Users Options</h2>
+        <form method="post" action="options.php">
+            <?php settings_fields('ldps_show_users_options'); ?>
+            <table class="form-table">
+                <tr valign="top"><th scope="row">Custom Page Slug</th>
+                    <td><input type="text" name="ldps_show_users[virtual_slug]" value="<?php echo $virtual_slug; ?>" /></td>
+                </tr>
+            </table>
+            <p class="submit">
+            <input type="submit" class="button-primary" value="<?php _e('Save Changes') ?>" />
+            </p>
+        </form>
+    </div>
+    <?php   
 }
 
+// Sanitize and validate input. Accepts an array, return a sanitized array.
+function ldps_sampleoptions_validate($input) {
+    // Say our second option must be safe text with no HTML tags
+    $input['virtual_slug'] =  sanitize_title($input['virtual_slug']);
+    
+    return $input;
+}
