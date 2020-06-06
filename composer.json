@@ -1,0 +1,13 @@
+{
+    "name": "wpackagist-plugin/jjjjcccjjf-show-users",
+    "description": "A wordpress plugin that utilises a static URL to display a virtual page of https://jsonplaceholder.typicode.com/users in table format",
+    "authors": [
+        {
+            "name": "Lorenzo Salamante",
+            "email": "lorenzodante.dev@gmail.com"
+        }
+    ],
+    "require": {
+    	"php": ">=7.0",
+    }
+}

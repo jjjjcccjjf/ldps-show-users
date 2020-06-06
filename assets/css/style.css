@@ -48,7 +48,7 @@
   background: #fff;
   border-radius: 5px;
   padding: 1em 2em;
-  height: 75%;
+  height: 70%;
 }
 
 .modal__close {
@@ -112,8 +112,19 @@
 }
 
 .modal__inner h6 {
-    margin: 20px 0 20px 0px;
+    margin: 20px 0 0 0px;
     font-size:1.5em;
+}
+
+.modal-body div {
+  margin-bottom:13px;
+}
+.modal-body div span {
+  font-size:0.75em;
+}
+
+.modal-body p {
+  margin: 13px 0px 13px 0px;
 }
 
 body{
