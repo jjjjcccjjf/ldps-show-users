@@ -48,7 +48,7 @@ function nc_settings_link( $links ) {
 		$settings_link
 	);
 	return $links;
-}//end nc_settings_link()
+} 
 
 add_action( 'admin_menu', 'linked_url' );
 function linked_url() {
@@ -56,18 +56,25 @@ function linked_url() {
 }
 
 function my_js_include_function() {
-    global $option_defaults;
+    global $option_defaults, $wp_styles;
     $options = wp_parse_args(get_option('ldps_show_users'), $option_defaults);
     $use_default_style = $options['use_default_style'];
-    
+
     wp_enqueue_style('ldps-style', plugin_dir_url(__FILE__) . 'assets/css/ldps-style.css', array(), null, 'all');
+
     if ($use_default_style) {
-        wp_dequeue_style( 'twentytwenty-style' );
+        foreach( $wp_styles->queue as $style ) {
+           if (!in_array($style, ['admin-bar', 'wp-block-library', 'ldps-style'])) {
+               wp_deregister_style($style);
+               wp_dequeue_style($style);
+           }
+        }
+
     	wp_enqueue_style('ldps-twentytwenty', plugin_dir_url(__FILE__) . 'assets/css/ldps-twentytwenty.css', array(), null, 'all');
     }
     wp_enqueue_script('ldps-script', plugin_dir_url(__FILE__) . 'assets/js/ldps-script.js', array('jquery') );
 }
-add_action( 'wp_enqueue_scripts', 'my_js_include_function' );
+add_action('wp_print_styles', 'my_js_include_function', 100);
 
 /////////////////////////////////
 
