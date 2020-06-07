@@ -1057,9 +1057,73 @@ body .markdown-body
 .codehilite .gc{color:#999;background-color:#EAF2F5}
 </style><title>README</title></head><body><article class="markdown-body"><h1 id="show-users">Show Users<a class="headerlink" href="#show-users" title="Permanent link"></a></h1>
 <p>A wordpress plugin that utilises a static URL to display a virtual page of <a href="https://jsonplaceholder.typicode.com/users">https://jsonplaceholder.typicode.com/users</a> in table format</p>
+<h2 id="contents">Contents<a class="headerlink" href="#contents" title="Permanent link"></a></h2>
+<ul>
+<li><a href="#system-requirements">System Requirements</a></li>
+<li><a href="#dependencies">Dependencies</a></li>
+<li><a href="#installation">Installation</a><ul>
+<li><a href="#composer-installation">Composer installation</a></li>
+</ul>
+</li>
+<li><a href="#usage">Usage</a><ul>
+<li><a href="#dashboard-link">Dashboard link</a></li>
+<li><a href="#settings">Settings</a><ul>
+<li><a href="#settings-link">Settings link</a></li>
+<li><a href="#settings-link">Settings page</a></li>
+</ul>
+</li>
+<li><a href="#plugin-virtual-page">Plugin virtual page</a></li>
+</ul>
+</li>
+<li><a href="#notes">Notes</a><ul>
+<li><a href="#composer-support">Composer support</a></li>
+</ul>
+</li>
+</ul>
 <h2 id="system-requirements">System Requirements<a class="headerlink" href="#system-requirements" title="Permanent link"></a></h2>
 <ul>
 <li>PHP &gt;=5.6</li>
-<li>Wordpress 5.4 (minimum)</li>
+<li>Wordpress &gt;= 5.4</li>
 </ul>
-<hr /></article></body></html>
+<h2 id="dependencies">Dependencies<a class="headerlink" href="#dependencies" title="Permanent link"></a></h2>
+<ul>
+<li><a href="https://github.com/composer/installers">Composer installers</a> - Used to customize the plugin installation path to <em>wp-content/plugins</em></li>
+</ul>
+<h2 id="installation">Installation<a class="headerlink" href="#installation" title="Permanent link"></a></h2>
+<h3 id="composer-installation">Composer installation<a class="headerlink" href="#composer-installation" title="Permanent link"></a></h3>
+<p>To install via composer, simply run the following command:  </p>
+<p><code>$ composer require jjjjcccjjf/ldps-show-users</code>  </p>
+<p>and activate the plugin.</p>
+<h2 id="usage">Usage<a class="headerlink" href="#usage" title="Permanent link"></a></h2>
+<p>The plugin, once activated, creates a virtual page on your wordpress site to access the default <em>show-users</em> url. I call it a <em>virtual page</em> because the plugin does not actually create an actual Page in the wordpress database. </p>
+<h4 id="dashboard-link">Dashboard link<a class="headerlink" href="#dashboard-link" title="Permanent link"></a></h4>
+<p>For convenience, a link is included in the WP-admin dashboard to access the virtual page. <em>(Screenshots of the actual page can be found after the Settings section)</em></p>
+<p><img alt="Dashboard link" src="https://i.imgur.com/tGZzDKK.png" /></p>
+<h4 id="settings">Settings<a class="headerlink" href="#settings" title="Permanent link"></a></h4>
+<h5 id="settings-link">Settings link<a class="headerlink" href="#settings-link" title="Permanent link"></a></h5>
+<p>You can access the settings page of the plugin either by the WP-admin sidebar</p>
+<p><img alt="Settings link" src="https://i.imgur.com/Iwv3bwV.png" /></p>
+<p>or at the Plugins page in WP-admin itself</p>
+<p><img alt="Plugin link" src="https://i.imgur.com/2BB2bHc.png" /></p>
+<h5 id="settings-page">Settings page<a class="headerlink" href="#settings-page" title="Permanent link"></a></h5>
+<p>There are two options that could be configured in this plugin. They are listed below.</p>
+<ul>
+<li><strong>Use default style</strong> - If checked, this option allows the plugin to use its own default stylesheet. Otherwise the plugin will just inherit the styles of the active theme. <ul>
+<li><em>(Default value: checked)</em></li>
+</ul>
+</li>
+<li><strong>Custom Page Slug</strong> - This option allows the user to set their own url of choosing for the plugin&rsquo;s virtual page. <ul>
+<li><em>(Default value: &lsquo;show-users&rsquo;)</em></li>
+<li><em>(Note: If you create a Page with the same slug, it will be overriden and the custom page will take precedence)</em></li>
+</ul>
+</li>
+</ul>
+<p><img alt="Settings page" src="https://i.imgur.com/8QVvOXd.png" /></p>
+<h4 id="plugin-virtual-page">Plugin virtual page<a class="headerlink" href="#plugin-virtual-page" title="Permanent link"></a></h4>
+<p>Once the link is visited, the page will then display the users table fetched asynchronously from the API.</p>
+<p><img alt="Plugin virtual page" src="https://i.imgur.com/plsj7FD.png" /></p>
+<p>Each user&rsquo;s details can be then found by clicking on any information on the row, making another asynchronous call to the API.</p>
+<p><img alt="Details view" src="https://i.imgur.com/Gt8ESqv.png" /></p>
+<h2 id="notes">Notes<a class="headerlink" href="#notes" title="Permanent link"></a></h2>
+<h4 id="composer-support">Composer support<a class="headerlink" href="#composer-support" title="Permanent link"></a></h4>
+<p>A full composer support has been added to attend to modern wordpress development standard of using wordpress alongside composer such as installing the wordpress core itself, configuring plugins, themes, etc. But this is not a requirement and the plugin could also be installed using the traditional means by copy-and-pasting it to the wordpress plugin directory.</p></article></body></html>
