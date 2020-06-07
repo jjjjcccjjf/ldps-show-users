@@ -15,6 +15,7 @@ function contact_page_template( $template ) {
     $file_name = 'template-ldps-show-users.php';
 
     $url_path = trim(parse_url(add_query_arg(array()), PHP_URL_PATH), '/');
+    // var_dump($url_path); die();
     $templatename = 'show-users'; 
     $pos = strpos($url_path, $templatename); 
 
@@ -59,14 +60,14 @@ function my_js_include_function() {
     $options = wp_parse_args(get_option('ldps_show_users'), $option_defaults);
     $use_default_style = $options['use_default_style'];
     
-    wp_enqueue_style('style.css', plugin_dir_url(__FILE__) . 'assets/css/style.css', array(), null, 'all');
+    wp_enqueue_style('ldps-style', plugin_dir_url(__FILE__) . 'assets/css/ldps-style.css', array(), null, 'all');
     if ($use_default_style) {
-    	wp_enqueue_style('twentytwenty.css', plugin_dir_url(__FILE__) . 'assets/css/twentytwenty.css', array(), null, 'all');
+        wp_dequeue_style( 'twentytwenty-style' );
+    	wp_enqueue_style('ldps-twentytwenty', plugin_dir_url(__FILE__) . 'assets/css/ldps-twentytwenty.css', array(), null, 'all');
     }
-    wp_enqueue_script('script.js', plugin_dir_url(__FILE__) . 'assets/js/script.js', array('jquery') );
+    wp_enqueue_script('ldps-script', plugin_dir_url(__FILE__) . 'assets/js/ldps-script.js', array('jquery') );
 }
 add_action( 'wp_enqueue_scripts', 'my_js_include_function' );
-
 
 /////////////////////////////////
 
