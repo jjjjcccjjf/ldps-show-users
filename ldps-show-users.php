@@ -11,12 +11,11 @@ defined( 'ABSPATH' ) or die();
 
 add_filter( 'template_include', 'contact_page_template', 99 );
 function contact_page_template( $template ) {
-
+    global $filtered_options;
     $file_name = 'template-ldps-show-users.php';
 
     $url_path = trim(parse_url(add_query_arg(array()), PHP_URL_PATH), '/');
-    // var_dump($url_path); die();
-    $templatename = 'show-users'; 
+    $templatename = $filtered_options['virtual_slug']; 
     $pos = strpos($url_path, $templatename); 
 
     if ($pos !== false) {
@@ -56,9 +55,8 @@ function linked_url() {
 }
 
 function my_js_include_function() {
-    global $option_defaults, $wp_styles;
-    $options = wp_parse_args(get_option('ldps_show_users'), $option_defaults);
-    $use_default_style = $options['use_default_style'];
+    global $filtered_options, $wp_styles;
+    $use_default_style = $filtered_options['use_default_style'];
 
     wp_enqueue_style('ldps-style', plugin_dir_url(__FILE__) . 'assets/css/ldps-style.css', array(), null, 'all');
 
@@ -82,12 +80,11 @@ $option_defaults = array(
   'virtual_slug' => 'show-users',
   'use_default_style' => 1
 );
+$filtered_options = wp_parse_args(get_option('ldps_show_users'), $option_defaults);
 
 function linkedurl_function() {
-	global $menu;
-    global $option_defaults;
-    $options = wp_parse_args(get_option('ldps_show_users'), $option_defaults);
-	$menu[1][2] = home_url($options['virtual_slug']);
+	global $menu, $filtered_options;
+	$menu[1][2] = home_url($filtered_options['virtual_slug']);
 }
 add_action( 'admin_menu' , 'linkedurl_function' );
 
@@ -105,10 +102,9 @@ add_action('admin_menu', 'ldps_show_users_options_add_page');
 
 // Draw the menu page itself
 function ldps_show_users_options_do_page() {
-    global $option_defaults;
-    $options = wp_parse_args(get_option('ldps_show_users'), $option_defaults);
-    $virtual_slug = $options['virtual_slug'];
-    $use_default_style = $options['use_default_style'];
+    global $filtered_options;
+    $virtual_slug = $filtered_options['virtual_slug'];
+    $use_default_style = $filtered_options['use_default_style'];
     ?>
     <div class="wrap">
         <h2>Show Users Options</h2>
