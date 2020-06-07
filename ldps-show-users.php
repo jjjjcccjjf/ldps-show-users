@@ -7,105 +7,137 @@
  * Author: Lorenzo Dante
  * Author URI: mailto:lorenzodante.dev@gmail.com
  */
-defined( 'ABSPATH' ) or die();
 
-add_filter( 'template_include', 'contact_page_template', 99 );
-function contact_page_template( $template ) {
-    global $filtered_options;
-    $file_name = 'template-ldps-show-users.php';
+// do not allow direct access
+defined('ABSPATH') or die();
 
-    $url_path = trim(parse_url(add_query_arg(array()), PHP_URL_PATH), '/');
-    $templatename = $filtered_options['virtual_slug']; 
-    $pos = strpos($url_path, $templatename); 
-
-    if ($pos !== false) {
-    	status_header(200);
-        if ( locate_template( $file_name ) ) {
-            $template = locate_template( $file_name );
-        } else {
-            // Template not found in theme's folder, use plugin's template as a fallback
-            $template = dirname( __FILE__ ) . '/assets/templates/' . $file_name;
-        }
-    }
-
-    return $template;
-}
-
-add_filter( 'plugin_action_links_ldps-show-users/ldps-show-users.php', 'nc_settings_link' );
-function nc_settings_link( $links ) {
-	// Build and escape the URL.
-	$url = esc_url( add_query_arg(
-		'page',
-		'ldps_show_users_options',
-		get_admin_url() . 'admin.php'
-	) );
-	// Create the link.
-	$settings_link = "<a href='$url'>" . __( 'Settings' ) . '</a>';
-	// Adds the link to the end of the array.
-	array_push(
-		$links,
-		$settings_link
-	);
-	return $links;
-} 
-
-add_action( 'admin_menu', 'linked_url' );
-function linked_url() {
-	add_menu_page( 'linked_url', 'Show Users', 'read', 'my_slug', '', 'dashicons-text', 1 );
-}
-
-function my_js_include_function() {
-    global $filtered_options, $wp_styles;
-    $use_default_style = $filtered_options['use_default_style'];
-
-    wp_enqueue_style('ldps-style', plugin_dir_url(__FILE__) . 'assets/css/ldps-style.css', array(), null, 'all');
-
-    if ($use_default_style) {
-        foreach( $wp_styles->queue as $style ) {
-           if (!in_array($style, ['admin-bar', 'wp-block-library', 'ldps-style'])) {
-               wp_deregister_style($style);
-               wp_dequeue_style($style);
-           }
-        }
-
-    	wp_enqueue_style('ldps-twentytwenty', plugin_dir_url(__FILE__) . 'assets/css/ldps-twentytwenty.css', array(), null, 'all');
-    }
-    wp_enqueue_script('ldps-script', plugin_dir_url(__FILE__) . 'assets/js/ldps-script.js', array('jquery') );
-}
-add_action('wp_print_styles', 'my_js_include_function', 100);
-
-/////////////////////////////////
-
+// Variables
+// Define our default global variables for plugin options context
 $option_defaults = array(
   'virtual_slug' => 'show-users',
   'use_default_style' => 1
 );
 $filtered_options = wp_parse_args(get_option('ldps_show_users'), $option_defaults);
 
-function linkedurl_function() {
-	global $menu, $filtered_options;
-	$menu[1][2] = home_url($filtered_options['virtual_slug']);
+/**
+ * Hijack the page if it matches our virtual_slug and display our template
+ */
+function ldps_do_virtual_page_template($template)
+{
+    global $filtered_options;
+    $file_name = 'template-ldps-show-users.php';
+
+    $url_path = trim(parse_url(add_query_arg(array()), PHP_URL_PATH), '/');
+    $templatename = $filtered_options['virtual_slug']; // get our option value
+    $pos = strpos($url_path, $templatename);
+
+    // Make sure we only hijack the page when the exact virtual_slug is retrieved from the options
+    if ($pos !== false) {
+        status_header(200);
+        if (locate_template($file_name)) { // locate the template in themes in case it is overridden
+            $template = locate_template($file_name);
+        } else {
+            // If template is not found in theme's folder, use plugin's template as a fallback
+            $template = dirname(__FILE__) . '/assets/templates/' . $file_name;
+        }
+    }
+
+    return $template;
 }
-add_action( 'admin_menu' , 'linkedurl_function' );
+add_filter('template_include', 'ldps_do_virtual_page_template', 99);
+
+/**
+ * Add direct access to our virtual page on the topmost level of our admin menu
+ */
+function ldps_link_virtual_page_url()
+{
+    add_menu_page('ldps_link_virtual_page_url', 'Show Users', 'read', 'my_slug', '', 'dashicons-text', 1);
+}
+add_action('admin_menu', 'ldps_link_virtual_page_url');
+
+/**
+ * Add settings link to WP Sidebar > Settings
+ */
+function ldps_link_settings_sidebar()
+{
+    global $menu, $filtered_options;
+    $menu[1][2] = home_url($filtered_options['virtual_slug']);
+}
+add_action('admin_menu', 'ldps_link_settings_sidebar');
+
+/**
+ * Add a Settings link to the Plugin page
+ */
+function ldps_link_settings_plugin_page($links)
+{
+    // Build and escape the URL.
+    $url = esc_url(add_query_arg(
+        'page',
+        'ldps_show_users_options',
+        get_admin_url() . 'admin.php'
+    ));
+    // Create the link.
+    $settings_link = "<a href='$url'>" . __('Settings') . '</a>';
+    // Adds the link to the end of the array.
+    array_push(
+        $links,
+        $settings_link
+    );
+    return $links;
+}
+add_filter('plugin_action_links_ldps-show-users/ldps-show-users.php', 'ldps_link_settings_plugin_page');
+
+
+/**
+ * Load our default script and styles and also allow the user to choose whether they want their theme's main CSS to take over or just use the default plugin CSS
+ */
+function ldps_control_styles()
+{
+    global $filtered_options, $wp_styles;
+    $use_default_style = $filtered_options['use_default_style'];
+
+    // Load default custom styling for modals, etc. and our main script
+    wp_enqueue_style('ldps-style', plugin_dir_url(__FILE__) . 'assets/css/ldps-style.css', array(), null, 'all');
+    wp_enqueue_script('ldps-script', plugin_dir_url(__FILE__) . 'assets/js/ldps-script.js', array('jquery'));
+
+    if ($use_default_style) {
+        foreach ($wp_styles->queue as $style) { // We remove all other styles if the user prefers the default plugin style
+            if (!in_array($style, ['admin-bar', 'wp-block-library', 'ldps-style'])) {
+                wp_deregister_style($style);
+                wp_dequeue_style($style);
+            }
+        }
+        // Then load the copied twentytwenty CSS
+        wp_enqueue_style('ldps-twentytwenty', plugin_dir_url(__FILE__) . 'assets/css/ldps-twentytwenty.css', array(), null, 'all');
+    }
+}
+add_action('wp_print_styles', 'ldps_control_styles', 100); // We use this hook because the theme's styles are not loaded yet on wp_enqueue_scripts so we have to remove the theme's files AFTER wordpress enqueues them
+
+
+################
+#### OPTIONS
+################
 
 // Init plugin options to white list our options
-function ldps_show_users_options_init(){
-    register_setting( 'ldps_show_users_options', 'ldps_show_users', 'ldps_show_users_options_validate' );
+function ldps_show_users_options_init()
+{
+    register_setting('ldps_show_users_options', 'ldps_show_users', 'ldps_show_users_options_validate');
 }
-add_action('admin_init', 'ldps_show_users_options_init' );
+add_action('admin_init', 'ldps_show_users_options_init');
 
 // Add menu page
-function ldps_show_users_options_add_page() {
+function ldps_show_users_options_add_page()
+{
     add_options_page('Show Users Options', 'Show Users Options', 'manage_options', 'ldps_show_users_options', 'ldps_show_users_options_do_page');
 }
 add_action('admin_menu', 'ldps_show_users_options_add_page');
 
 // Draw the menu page itself
-function ldps_show_users_options_do_page() {
+function ldps_show_users_options_do_page()
+{
     global $filtered_options;
     $virtual_slug = $filtered_options['virtual_slug'];
-    $use_default_style = $filtered_options['use_default_style'];
-    ?>
+    $use_default_style = $filtered_options['use_default_style']; ?>
     <div class="wrap">
         <h2>Show Users Options</h2>
         <form method="post" action="options.php">
@@ -123,15 +155,16 @@ function ldps_show_users_options_do_page() {
             </p>
         </form>
     </div>
-    <?php   
+    <?php
 }
 
 // Sanitize and validate input. Accepts an array, return a sanitized array.
-function ldps_show_users_options_validate($input) {
+function ldps_show_users_options_validate($input)
+{
     // Our first value is either 0 or 1
-    $input['use_default_style'] = ( $input['use_default_style'] == 1 ? 1 : 0 );
+    $input['use_default_style'] = ($input['use_default_style'] == 1 ? 1 : 0);
 
-    // Say our second option must be safe text with no HTML tags
+    // Sanitize to make URL-like
     $input['virtual_slug'] =  sanitize_title($input['virtual_slug']);
     
     return $input;
