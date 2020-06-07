@@ -55,7 +55,14 @@ function linked_url() {
 }
 
 function my_js_include_function() {
+    global $option_defaults;
+    $options = wp_parse_args(get_option('ldps_show_users'), $option_defaults);
+    $use_default_style = $options['use_default_style'];
+    
     wp_enqueue_style('style.css', plugin_dir_url(__FILE__) . 'assets/css/style.css', array(), null, 'all');
+    if ($use_default_style) {
+    	wp_enqueue_style('twentytwenty.css', plugin_dir_url(__FILE__) . 'assets/css/twentytwenty.css', array(), null, 'all');
+    }
     wp_enqueue_script('script.js', plugin_dir_url(__FILE__) . 'assets/js/script.js', array('jquery') );
 }
 add_action( 'wp_enqueue_scripts', 'my_js_include_function' );
@@ -65,6 +72,7 @@ add_action( 'wp_enqueue_scripts', 'my_js_include_function' );
 
 $option_defaults = array(
   'virtual_slug' => 'show-users',
+  'use_default_style' => 1
 );
 
 function linkedurl_function() {
@@ -92,12 +100,16 @@ function ldps_show_users_options_do_page() {
     global $option_defaults;
     $options = wp_parse_args(get_option('ldps_show_users'), $option_defaults);
     $virtual_slug = $options['virtual_slug'];
+    $use_default_style = $options['use_default_style'];
     ?>
     <div class="wrap">
         <h2>Show Users Options</h2>
         <form method="post" action="options.php">
             <?php settings_fields('ldps_show_users_options'); ?>
             <table class="form-table">
+                <tr valign="top"><th scope="row">Use default style</th>
+                    <td><input name="ldps_show_users[use_default_style]" type="checkbox" value="1" <?php checked('1', $use_default_style); ?> /></td>
+                </tr>
                 <tr valign="top"><th scope="row">Custom Page Slug</th>
                     <td><input type="text" name="ldps_show_users[virtual_slug]" value="<?php echo $virtual_slug; ?>" /></td>
                 </tr>
@@ -112,6 +124,9 @@ function ldps_show_users_options_do_page() {
 
 // Sanitize and validate input. Accepts an array, return a sanitized array.
 function ldps_show_users_options_validate($input) {
+    // Our first value is either 0 or 1
+    $input['use_default_style'] = ( $input['use_default_style'] == 1 ? 1 : 0 );
+
     // Say our second option must be safe text with no HTML tags
     $input['virtual_slug'] =  sanitize_title($input['virtual_slug']);
     
