@@ -19,22 +19,19 @@ if (! class_exists('LdpsShowUsers')) :
 
     class LdpsShowUsers
     {
-
-        // Variables
-        // Define our default global variables for plugin options context
         private $optionDefaults = [
           'virtual_slug' => 'show-users',
           'use_default_style' => 1,
         ];
     
-        private $filteredOptions;
-        
         private $baseTemplateName = 'template-ldps-show-users.php';
+
+        private $filteredOptions;
 
         public function __construct()
         {
             $this->filteredOptions = wp_parse_args(get_option('ldps_show_users'), $this->optionDefaults);
-
+            
             // Add to admin menu our main link
             add_action('admin_menu', [$this, 'linkVirtualPageUrl']);
 
@@ -187,7 +184,11 @@ if (! class_exists('LdpsShowUsers')) :
         // Init plugin options to white list our options
         public function showUsersOptionsInit()
         {
-            register_setting('ldps_show_users_options', 'ldps_show_users', 'showUsersOptionsValidate');
+            register_setting(
+                'ldps_show_users_options',
+                'ldps_show_users',
+                [$this, 'showUsersOptionsValidate']
+            );
         }
 
         // Add menu page
@@ -238,7 +239,7 @@ if (! class_exists('LdpsShowUsers')) :
         public function showUsersOptionsValidate(array $input) : array
         {
             // Our first value is either 0 or 1
-            $input['use_default_style'] = ((int) $input['use_default_style'] === 1 ? 1 : 0);
+            $input['use_default_style'] = ($input['use_default_style'] === '1' ? 1 : 0);
 
             // Sanitize to make URL-like
             $input['virtual_slug'] =  sanitize_title($input['virtual_slug']);

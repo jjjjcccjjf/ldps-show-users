@@ -1077,6 +1077,7 @@ body .markdown-body
 </li>
 <li><a href="#notes">Notes</a><ul>
 <li><a href="#composer-support">Composer support</a></li>
+<li><a href="#caching-explanation">Caching explanation</a></li>
 </ul>
 </li>
 </ul>
@@ -1126,4 +1127,6 @@ body .markdown-body
 <p><img alt="Details view" src="https://i.imgur.com/Gt8ESqv.png" /></p>
 <h2 id="notes">Notes<a class="headerlink" href="#notes" title="Permanent link"></a></h2>
 <h4 id="composer-support">Composer support<a class="headerlink" href="#composer-support" title="Permanent link"></a></h4>
-<p>A full composer support has been added to attend to modern wordpress development standard of using wordpress alongside composer such as installing the wordpress core itself, configuring plugins, themes, etc. But this is not a requirement and the plugin could also be installed using the traditional means by copy-and-pasting it to the wordpress plugin directory.</p></article></body></html>
+<p>A full composer support has been added to attend to modern wordpress development standard of using wordpress alongside composer such as installing the wordpress core itself, configuring plugins, themes, etc. But this is not a requirement and the plugin could also be installed using the traditional means by copy-and-pasting it to the wordpress plugin directory.</p>
+<h4 id="caching-explanation">Caching explanation<a class="headerlink" href="#caching-explanation" title="Permanent link"></a></h4>
+<p>I opted not to cache the JSON data coming from the API as I found out that the browsers I&rsquo;ve tested with already caches the request themselves (tested on Opera, Firefox, and Google Chrome).</p></article></body></html>

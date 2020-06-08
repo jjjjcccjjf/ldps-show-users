@@ -15,6 +15,7 @@ A wordpress plugin that utilises a static URL to display a virtual page of [http
     * [Plugin virtual page](#plugin-virtual-page)
 * [Notes](#notes)
     * [Composer support](#composer-support)
+    * [Caching explanation](#caching-explanation)
 
 ## System Requirements
 * PHP >=5.6
@@ -72,3 +73,6 @@ Each user's details can be then found by clicking on any information on the row,
 ## Notes
 #### Composer support
 A full composer support has been added to attend to modern wordpress development standard of using wordpress alongside composer such as installing the wordpress core itself, configuring plugins, themes, etc. But this is not a requirement and the plugin could also be installed using the traditional means by copy-and-pasting it to the wordpress plugin directory.
+
+#### Caching explanation
+I opted not to cache the JSON data coming from the API as I found out that the browsers I've tested with already caches the request themselves (tested on Opera, Firefox, and Google Chrome).
