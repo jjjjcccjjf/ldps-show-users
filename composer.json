@@ -23,5 +23,8 @@
         "brain/monkey": "2.*",
         "phpunit/phpunit": "5.7.9",
         "sebastian/resource-operations": "^1.0"
-    }
+    },
+    "post-install-cmd": [
+        "composer dump-autoload -o"
+    ]
 }
