@@ -18,3 +18,4 @@ defined('ABSPATH') or die();
 
 global $ldpsShowUsers;
 $ldpsShowUsers = new \jjjjcccjjf\ShowUsers\LdpsShowUsers();
+$ldpsShowUsers->hookAll();

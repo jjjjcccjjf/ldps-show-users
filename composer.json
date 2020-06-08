@@ -20,6 +20,8 @@
     },
     "require-dev": {
         "inpsyde/php-coding-standards": "^0.13.4",
-        "brain/monkey": "2.*"
+        "brain/monkey": "2.*",
+        "phpunit/phpunit": "5.7.9",
+        "sebastian/resource-operations": "^1.0"
     }
 }

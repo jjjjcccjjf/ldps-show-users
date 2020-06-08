@@ -75,4 +75,4 @@ Each user's details can be then found by clicking on any information on the row,
 A full composer support has been added to attend to modern wordpress development standard of using wordpress alongside composer such as installing the wordpress core itself, configuring plugins, themes, etc. But this is not a requirement and the plugin could also be installed using the traditional means by copy-and-pasting it to the wordpress plugin directory.
 
 #### Caching explanation
-I opted not to cache the JSON data coming from the API as I found out that the browsers I've tested with already caches the request themselves (tested on Opera, Firefox, and Google Chrome).
+I opted not to cache the JSON data fetched from the API as I found out that the browsers I've tested with already caches the response themselves (tested on Opera, Firefox, and Google Chrome). Since the plugin requirements didn't specify database transactions even at minimum, I figured using server-side caching is a bit overkill so I ultimately had to rely on the browser's native caching capabilities.
