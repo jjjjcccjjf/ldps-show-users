@@ -10,7 +10,8 @@
 
 declare(strict_types=1);
 
-require 'vendor/autoload.php';
+// require 'vendor/autoload.php';
+require 'LdpsShowUsers.php';
 use jjjjcccjjf\ShowUsers;
 
 // do not allow direct access
