@@ -7,6 +7,11 @@
             "email": "lorenzodante.dev@gmail.com"
         }
     ],
+    "autoload": {
+        "classmap": [
+          "LdpsShowUsers.php"
+        ]
+    },
     "type": "wordpress-plugin",
     "license": "GPL-2.0+",
     "require": {
@@ -14,6 +19,7 @@
         "composer/installers": "~1.0"
     },
     "require-dev": {
-        "inpsyde/php-coding-standards": "^0.13.4"
+        "inpsyde/php-coding-standards": "^0.13.4",
+        "brain/monkey": "2.*"
     }
 }

@@ -1,12 +1,4 @@
 <?php
-/**
- * Plugin Name: Show Users
- * Plugin URI: https://github.com/jjjjcccjjf/ldps-show-users
- * Description: A wordpress plugin that utilises a static URL to display a virtual page of https://jsonplaceholder.typicode.com/users in table format
- * Version: 1.0
- * Author: Lorenzo Dante
- * Author URI: mailto:lorenzodante.dev@gmail.com
- */
 
 declare(strict_types=1);
 
@@ -15,10 +7,8 @@ namespace jjjjcccjjf\ShowUsers;
 // do not allow direct access
 defined('ABSPATH') or die();
 
-if (! class_exists('LdpsShowUsers')) :
-
-    class LdpsShowUsers
-    {
+class LdpsShowUsers
+{
         private $optionDefaults = [
           'virtual_slug' => 'show-users',
           'use_default_style' => 1,
@@ -43,7 +33,7 @@ if (! class_exists('LdpsShowUsers')) :
 
             // Add settings to plugin page
             add_filter(
-                'plugin_action_links_ldps-show-users/LdpsShowUsers.php',
+                'plugin_action_links_ldps-show-users/ldps-show-users.php',
                 [$this, 'linkSettingsPluginPage']
             );
 
@@ -246,8 +236,4 @@ if (! class_exists('LdpsShowUsers')) :
         
             return $input;
         }
-    }
-
-    global $ldpsShowUsers;
-    $ldpsShowUsers = new LdpsShowUsers();
-endif;
+}
